@@ -1,4 +1,4 @@
-import { TorusGeometry } from './TorusGeometry.js';
+import {SievertsGeometry} from './SievertsGeometry.js';
 
 window.onload = function(){
     var width = window.innerWidth;
@@ -19,7 +19,7 @@ window.onload = function(){
     var light = new THREE.AmbientLight(0xffffff);
     scene.add(light);
 
-    var geometry = new TorusGeometry( 10, 3, 16, 100 );
+    var geometry = new SievertsGeometry();
     var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
     var mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
