@@ -24,7 +24,7 @@ SievertsGeometry.prototype.constructor = SievertsGeometry;
 // SievertsBufferGeometry
 
 function SievertsBufferGeometry( c ) {
-
+    this.scale = 100;
     BufferGeometry.call( this );
 
     this.type = 'SievertsBufferGeometry';
@@ -33,7 +33,7 @@ function SievertsBufferGeometry( c ) {
         c: c
     };
 
-    c = c || 1;
+    c = c || 2;
 
     // buffers
 
@@ -52,9 +52,9 @@ function SievertsBufferGeometry( c ) {
 
     // generate vertices, normals and uvs
 
-    for ( v = 0; v <= Math.PI; v ++ ) {
+    for ( v = -1 * Math.PI; v <= 1 * Math.PI; v += 0.05 ) {
 
-        for ( u = - Math.PI / 2; u <= Math.PI / 2; u ++ ) {
+        for ( u = -0.95 * Math.PI; u <= 0.95 * Math.PI; u += 0.05 ) {
 
             // vertex
 
@@ -62,9 +62,9 @@ function SievertsBufferGeometry( c ) {
             var a = 2 / (c + 1 - c * Math.pow(Math.sin(v), 2) * Math.pow(Math.cos(u), 2));
             var r = a / Math.sqrt(c) * Math.sqrt((c + 1) * (1 + c * Math.pow(Math.sin(u), 2))) * Math.sin(v);
 
-            vertex.x = r * Math.cos(phi);
-            vertex.y = r * Math.sin(phi);
-            vertex.z = (Math.log10(Math.tan(v / 2)) + a * (c + 1) * Math.cos(v)) / Math.sqrt(c);
+            vertex.x = r * Math.cos(phi) * this.scale;
+            vertex.y = r * Math.sin(phi) * this.scale;
+            vertex.z = (Math.log10(Math.tan(v / 2)) + a * (c + 1) * Math.cos(v)) / Math.sqrt(c) * this.scale;
 
             vertices.push( vertex.x, vertex.y, vertex.z );
 
@@ -86,15 +86,15 @@ function SievertsBufferGeometry( c ) {
 
     // generate indices
 
-    for ( v = 1; v <= 8; v ++ ) {
-        for ( u = 1; u <= 6; u ++ ) {
+    for ( v = 1; v <= 100; v ++ ) {
+        for ( u = 1; u <= 100; u ++ ) {
 
             // indices
-
-            var a = ( 8 + 1 ) * v + u - 1;
-            var b = ( 8 + 1 ) * ( v - 1 ) + u - 1;
-            var c = ( 8 + 1 ) * ( v - 1 ) + u;
-            var d = ( 8 + 1 ) * v + u;
+const zhopa = 2;
+            var a = zhopa * ( zhopa + 1 ) * v + u - 1;
+            var b = zhopa * ( zhopa + 1 ) * ( v - 1 ) + u - 1;
+            var c = zhopa * ( zhopa + 1 ) * ( v - 1 ) + u;
+            var d = zhopa * ( zhopa + 1 ) * v + u;
 
             // faces
 
