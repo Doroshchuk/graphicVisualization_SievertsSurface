@@ -1,13 +1,12 @@
 class Surface {
-
-    constructor(quality = 30, animationStep = {x: 0.002, y: 0.004}) {
+    constructor(quality = 50, animationStep = {x: 0.004, y: 0.006}) {
         this.quality = quality;
         this.animationStep = animationStep;
     }
 
     init(drawingSurfaceFun, startZ = 70) {
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(5, window.innerWidth / window.innerHeight, 1, 10000);
+        this.camera = new THREE.PerspectiveCamera(5, window.innerWidth / window.innerHeight, 1, 5000);
         this.camera.position.z = startZ;
         this.scene.add(this.camera);
         const geometrySurface = new THREE.ParametricGeometry( drawingSurfaceFun, this.quality, this.quality );
@@ -29,7 +28,7 @@ class Surface {
 function sievertsDrawing(u, v) {
     var c = 5;
     u = u * Math.PI / 2;
-    v = v * 0.95 * Math.PI;
+    v = v * Math.PI * 0.95;
     var phi = -(u / Math.sqrt(c + 1)) + Math.atan(Math.sqrt(c + 1) * Math.tan(u));
     var a_ = 2 / (c + 1 - c * Math.pow(Math.sin(v), 2) * Math.pow(Math.cos(u), 2));
     var r = a_ / Math.sqrt(c) * Math.sqrt((c + 1) * (1 + c * Math.pow(Math.sin(u), 2))) * Math.sin(v);
