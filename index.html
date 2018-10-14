@@ -6,9 +6,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
     <title>Sievert`s surface</title>
-    <script src="js/lib/three-68.js"></script>
+    <script src="js/lib/three-82.js"></script>
     <script type="module" src="./js/SievertsSurface.js"></script>
 </head>
 <body>
+<canvas id="myCanvas"></canvas>
+
 </body>
+<script type="x-shader/x-vertex" id="vertexShader2">
+attribute float vertexDisplacement;
+uniform float delta;
+varying float vOpacity;
+varying vec3 vUv;
+
+void main()
+{
+    vUv = position;
+    vOpacity = vertexDisplacement;
+
+    vec3 p = position;
+
+    p.x += sin(vertexDisplacement) * 50.0;
+    p.y += cos(vertexDisplacement) * 50.0;
+
+	vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
+	gl_Position = projectionMatrix * modelViewPosition;
+}
+</script>
+<!--p.x += p.x + sin(vertexDisplacement + p.x);-->
+
+<script type="x-shader/x-fragment" id="fragmentShader2">
+uniform float delta;
+varying float vOpacity;
+varying vec3 vUv;
+
+void main() {
+
+    float r = 1.0 + cos(vUv.x * delta);
+    float g = 0.5 + sin(delta) * 0.5;
+    float b = 0.0;
+    vec3 rgb = vec3(r, g, b);
+
+	gl_FragColor = vec4(rgb, vOpacity);
+}
+</script>
 </html>      
