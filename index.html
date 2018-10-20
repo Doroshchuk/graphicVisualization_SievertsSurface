@@ -25,9 +25,9 @@ void main()
     vOpacity = vertexDisplacement;
 
     vec3 p = position;
-    p.x += sin(delta + vertexDisplacement) * 30.0;
-    p.y += cos(delta + vertexDisplacement) * 30.0;
-    p.z += cos(delta + vertexDisplacement) * 30.0;
+    p.x += sin(delta + vertexDisplacement) * 40.0;
+    p.y += cos(delta + vertexDisplacement) * 40.0;
+    p.z += cos(delta + vertexDisplacement) * 40.0;
 
 	vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
 	gl_Position = projectionMatrix * modelViewPosition;
