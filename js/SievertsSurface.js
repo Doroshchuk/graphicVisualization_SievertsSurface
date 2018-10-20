@@ -31,7 +31,6 @@ class Surface {
         this.vertexDisplacement = new Float32Array(geometrySurface.attributes.position.count);
         for (var i = 0; i < this.vertexDisplacement.length; i ++) {
             this.vertexDisplacement[i] = Math.sin(i);
-            //this.vertexDisplacement[i] = Math.sin(i - this.delta - this.vertexDisplacement[i]);
         }
         geometrySurface.addAttribute('vertexDisplacement', new THREE.BufferAttribute(this.vertexDisplacement, 1));
 
@@ -54,10 +53,9 @@ class Surface {
         // this.meshSurface.rotation.y += this.animationStep.y;
         // this.meshSurface.rotation.z += this.animationStep.z;
         this.meshSurface.material.uniforms.delta.value = 0.5 + Math.cos(this.delta) * 0.5;
-         this.delta += 0.01;
+        this.delta += 0.01;
         for (let i = 0; i < this.vertexDisplacement.length; i ++) {
-            //this.vertexDisplacement[i] *= Math.cos(i + this.delta + this.vertexDisplacement[i]);
-            this.vertexDisplacement[i] = 0.5 + Math.sin(i + this.delta) * 0.25;
+            this.vertexDisplacement[i] = 0.5 + Math.sin(i + this.delta + this.vertexDisplacement[i]) * this.vertexDisplacement[i] * 0.25;
         }
 
         this.meshSurface.geometry.attributes.vertexDisplacement.needsUpdate = true;
