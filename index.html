@@ -25,15 +25,14 @@ void main()
     vOpacity = vertexDisplacement;
 
     vec3 p = position;
-
-    p.x += sin(vertexDisplacement) * 50.0;
-    p.y += cos(vertexDisplacement) * 50.0;
+    p.x += sin(delta + vertexDisplacement) * 30.0;
+    p.y += cos(delta + vertexDisplacement) * 30.0;
+    p.z += cos(delta + vertexDisplacement) * 30.0;
 
 	vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
 	gl_Position = projectionMatrix * modelViewPosition;
 }
 </script>
-<!--p.x += p.x + sin(vertexDisplacement + p.x);-->
 
 <script type="x-shader/x-fragment" id="fragmentShader2">
 uniform float delta;
@@ -43,8 +42,8 @@ varying vec3 vUv;
 void main() {
 
     float r = 1.0 + cos(vUv.x * delta);
-    float g = 0.5 + sin(delta) * 0.5;
-    float b = 0.0;
+    float g = 0.7 + sin(delta) * 0.5;
+    float b = 0.5;
     vec3 rgb = vec3(r, g, b);
 
 	gl_FragColor = vec4(rgb, vOpacity);
