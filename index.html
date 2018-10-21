@@ -14,39 +14,24 @@
 
 </body>
 <script type="x-shader/x-vertex" id="vertexShader2">
-attribute float vertexDisplacement;
-uniform float delta;
-varying float vOpacity;
-varying vec3 vUv;
+ uniform float delta;
 
-void main()
-{
-    vUv = position;
-    vOpacity = vertexDisplacement;
+    void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x,position.y,position.z, 1.0);
+        gl_Position.x = gl_Position.x + sin(delta + position.x);
 
-    vec3 p = position;
-
-    p.x += sin(delta + vertexDisplacement) * 40.0;
-    p.y += cos(delta + vertexDisplacement) * 40.0;
-    p.z += cos(delta + vertexDisplacement) * 40.0;
-
-    vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
-    gl_Position = projectionMatrix * modelViewPosition;
-}
+    }
 </script>
 
 <script type="x-shader/x-fragment" id="fragmentShader2">
-uniform float delta;
-varying float vOpacity;
-varying vec3 vUv;
-
 void main() {
-    float r = 1.0 + cos(vUv.x * delta);
-    float g = 0.7 + sin(delta) * 0.5;
-    float b = 0.5;
+
+    float r = 0.2;
+    float g = 0.3;
+    float b = 0.8;
     vec3 rgb = vec3(r, g, b);
 
-	gl_FragColor = vec4(rgb, vOpacity);
+	gl_FragColor = vec4(rgb, 1);
 }
 </script>
 </html>      

@@ -1,9 +1,7 @@
 class Surface {
-    constructor(quality = 50, animationStep = {x: 0.001, y: 0.001, z: 0.005}) {
+    constructor(quality = 50) {
         this.quality = quality;
-        this.animationStep = animationStep;
         this.delta = 0.1;
-        this.vertexDisplacement = null;
     }
 
     init(drawingSurfaceFun, startZ = 1) {
@@ -24,19 +22,10 @@ class Surface {
         materialSurface.wireframe = true;
 
         this.meshSurface = new THREE.Mesh(geometrySurface, materialSurface);
-        this.meshSurface.position.x = 0;
-        this.meshSurface.position.y = -50;
-        this.meshSurface.position.z = -300;
-
         this.meshSurface.rotation.x = 1.05;
         this.meshSurface.rotation.y = 1.05;
         this.meshSurface.rotation.z = 5.21;
 
-        this.vertexDisplacement = new Float32Array(geometrySurface.attributes.position.count);
-        for (var i = 0; i < this.vertexDisplacement.length; i ++) {
-            this.vertexDisplacement[i] = Math.sin(i);
-        }
-        geometrySurface.addAttribute('vertexDisplacement', new THREE.BufferAttribute(this.vertexDisplacement, 1));
 
         this.scene.add(this.meshSurface);
         this.renderer = new THREE.WebGLRenderer({
@@ -49,17 +38,12 @@ class Surface {
     }
 
     render() {
-        // this.meshSurface.rotation.x += this.animationStep.x;
-        // this.meshSurface.rotation.y += this.animationStep.y;
-        // this.meshSurface.rotation.z += this.animationStep.z;
+        this.meshSurface.position.x = 0;
+        this.meshSurface.position.y = -50;
+        this.meshSurface.position.z = -300;
 
-        this.meshSurface.material.uniforms.delta.value = 0.5 + Math.cos(this.delta) * 0.5;
-        this.delta += 0.01;
-        for (let i = 0; i < this.vertexDisplacement.length; i ++) {
-            this.vertexDisplacement[i] = 0.5 + Math.sin(i + this.delta + this.vertexDisplacement[i]) * this.vertexDisplacement[i] * 0.25;
-        }
-
-        this.meshSurface.geometry.attributes.vertexDisplacement.needsUpdate = true;
+        this.meshSurface.material.uniforms.delta.value = this.delta;
+        this.delta += 0.1;
         this.renderer.render(this.scene, this.camera);
     }
 }
@@ -85,5 +69,4 @@ function animate() {
     sievertsSurface.render();
     requestAnimationFrame(animate);
 }
-
 animate(sievertsSurface);
