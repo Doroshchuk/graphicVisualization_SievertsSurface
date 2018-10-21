@@ -24,6 +24,10 @@ class Surface {
         materialSurface.wireframe = true;
 
         this.meshSurface = new THREE.Mesh(geometrySurface, materialSurface);
+        this.meshSurface.position.x = 0;
+        this.meshSurface.position.y = -50;
+        this.meshSurface.position.z = -300;
+
         this.meshSurface.rotation.x = 1.05;
         this.meshSurface.rotation.y = 1.05;
         this.meshSurface.rotation.z = 5.21;
@@ -45,13 +49,10 @@ class Surface {
     }
 
     render() {
-        this.meshSurface.position.x = 0;
-        this.meshSurface.position.y = -50;
-        this.meshSurface.position.z = -300;
-
         // this.meshSurface.rotation.x += this.animationStep.x;
         // this.meshSurface.rotation.y += this.animationStep.y;
         // this.meshSurface.rotation.z += this.animationStep.z;
+
         this.meshSurface.material.uniforms.delta.value = 0.5 + Math.cos(this.delta) * 0.5;
         this.delta += 0.01;
         for (let i = 0; i < this.vertexDisplacement.length; i ++) {

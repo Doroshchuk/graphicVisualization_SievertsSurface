@@ -25,12 +25,13 @@ void main()
     vOpacity = vertexDisplacement;
 
     vec3 p = position;
+
     p.x += sin(delta + vertexDisplacement) * 40.0;
     p.y += cos(delta + vertexDisplacement) * 40.0;
     p.z += cos(delta + vertexDisplacement) * 40.0;
 
-	vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
-	gl_Position = projectionMatrix * modelViewPosition;
+    vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
+    gl_Position = projectionMatrix * modelViewPosition;
 }
 </script>
 
@@ -40,7 +41,6 @@ varying float vOpacity;
 varying vec3 vUv;
 
 void main() {
-
     float r = 1.0 + cos(vUv.x * delta);
     float g = 0.7 + sin(delta) * 0.5;
     float b = 0.5;
