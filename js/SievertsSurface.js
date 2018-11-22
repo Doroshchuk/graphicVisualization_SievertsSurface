@@ -1,49 +1,70 @@
 class Surface {
-    constructor(quality = 50) {
+    constructor(quality = 150) {
         this.quality = quality;
         this.delta = 0.1;
     }
 
-    init(drawingSurfaceFun, startZ = 1) {
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 1000);
-        this.camera.position.z = startZ;
-        this.scene.add(this.camera);
-        const geometrySurface = new THREE.ParametricBufferGeometry( drawingSurfaceFun, this.quality, this.quality );
+    buildSphere() {
+        var geometry = new THREE.SphereGeometry( 10, 30, 30 );
+        var materialSurface = new THREE.MeshBasicMaterial({color: 0xffff00});
 
+        this.sphere = new THREE.Mesh( geometry, materialSurface );
+
+        this.sphere.position.x = 0;
+        this.sphere.position.y = -50;
+        this.sphere.position.z = -300;
+        return this.sphere;
+    }
+
+    buildSieverts(drawingSurfaceFun) {
         const customUniforms = {
-            delta: {type: 'f', value: 0}
+            viewPos: {type: "v3", value: this.camera.position},
+            lightPos: {type: "v3", value: this.sphere.position}
         };
         const materialSurface = new THREE.ShaderMaterial({
             uniforms: customUniforms,
-            vertexShader: document.getElementById('vertexShader2').textContent,
-            fragmentShader: document.getElementById('fragmentShader2').textContent
+            vertexShader: document.getElementById('surfaceVertexShader').textContent,
+            fragmentShader: document.getElementById('surfaceFragmentShader').textContent,
         });
-        materialSurface.wireframe = true;
 
+        const geometrySurface = new THREE.ParametricGeometry( drawingSurfaceFun, this.quality, this.quality );
         this.meshSurface = new THREE.Mesh(geometrySurface, materialSurface);
-        this.meshSurface.rotation.x = 1.05;
+        this.meshSurface.rotation.x = 5;
         this.meshSurface.rotation.y = 1.05;
         this.meshSurface.rotation.z = 5.21;
+        return this.meshSurface;
+    }
 
+    init(drawingSurfaceFun, startZ = 50) {
 
-        this.scene.add(this.meshSurface);
+        this.scene = new THREE.Scene();
+
+        this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 100, 1000);
+        this.camera.position.z = startZ;
+        this.scene.add(this.camera);
+
+        this.scene.add(this.buildSphere());
+        this.scene.add(this.buildSieverts(drawingSurfaceFun));
+
         this.renderer = new THREE.WebGLRenderer({
             canvas: document.getElementById('myCanvas'),
             antialias: true
         });
+
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(this.renderer.domElement);
     }
 
     render() {
         this.meshSurface.position.x = 0;
-        this.meshSurface.position.y = -50;
-        this.meshSurface.position.z = -300;
+        this.meshSurface.position.y = 50;
+        this.meshSurface.position.z = -600;
 
-        this.meshSurface.material.uniforms.delta.value = this.delta;
-        this.delta += 0.1;
+        this.sphere.position.x = -50 + Math.sin(this.delta + 4) * 100;
+        this.sphere.position.y = -5 + Math.sin(this.delta + 3) * 40;
+        this.sphere.position.z = -610 + Math.sin(this.delta) * 70;
+
+        this.delta += 0.05;
         this.renderer.render(this.scene, this.camera);
     }
 }
