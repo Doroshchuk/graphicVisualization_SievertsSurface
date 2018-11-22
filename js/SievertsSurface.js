@@ -1,5 +1,5 @@
 class Surface {
-    constructor(quality = 150) {
+    constructor(quality = 165) {
         this.quality = quality;
         this.delta = 0.1;
     }
