@@ -6,48 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
     <title>Sievert`s surface</title>
-    <script src="js/lib/three-68.js"></script>
+    <script src="js/lib/three-82.js"></script>
     <script type="module" src="./js/SievertsSurface.js"></script>
 </head>
 <body>
 <canvas id="myCanvas"></canvas>
 </body>
-
-<script type="x-shader/x-vertex" id="surfaceVertexShader">
-varying vec3 calculatedPosition;
-varying vec3 calculatedNormal;
-
-void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    calculatedPosition = vec3(modelViewMatrix * vec4(position, 1.0));
-    calculatedNormal = normal;
-}
-</script>
-
-<script type="x-shader/x-fragment" id="surfaceFragmentShader">
-varying vec3 calculatedNormal;
-varying vec3 calculatedPosition;
-
-uniform vec3 lightPos;
-uniform vec3 viewPos;
-
-void main()
-{
-    vec3 figureColor = vec3(0.7,0.9,0.7);
-    vec3 sourceColor = vec3(0.12,0.15,0.8);
-    float specularStrength = 0.3;
-    float ambientStrength = 0.4;
-    vec3 norm = normalize(calculatedNormal);
-    vec3 ambientLight = ambientStrength * sourceColor;
-    vec3 lightDirection = normalize(lightPos - calculatedPosition);
-    vec3 diffuse = max(dot(norm, lightDirection), 0.0) * sourceColor;
-    vec3 viewDirection = normalize(viewPos - calculatedPosition);
-    vec3 reflectDirection = reflect(-lightDirection, norm);
-    float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 32.0);
-    vec3 specular = specularStrength * spec * sourceColor;
-    vec3 result = (ambientLight + diffuse + specular) * figureColor;
-    gl_FragColor = vec4(result, 1.0);
-}
-</script>
-
 </html>
