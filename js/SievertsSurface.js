@@ -1,5 +1,5 @@
 class Surface {
-    constructor(quality = 165) {
+    constructor(quality = 180) {
         this.quality = quality;
     }
 
@@ -25,17 +25,31 @@ class Surface {
         // pink
         texture3.mipmaps[7] = this.mipmap(1, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAN0lEQVR42u3OQQ0AAAgEIO2fzkRnCjcfkIBOTeqxFhQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUvLGvH3CBePh7qAAAAABJRU5ErkJggg==');
 
-        const position = 12;
-        texture3.repeat.set(position, position);
+        var u, v;
+        for (var i = 0; i <= this.quality; i++) {
+            v = i / this.quality;
+            //v = v * Math.PI * 0.98;
+            for (var j = 0; j <= this.quality; j++) {
+                u = j / this.quality;
+                //u = u * Math.PI / 2.5;
+
+                texture3.repeat.set(u, v);
+            }
+        }
+
+        // const position = 12;
+        // texture3.repeat.set(position, position);
         texture3.wrapS = texture3.wrapT = THREE.RepeatWrapping;
 
         // const materialSurface = new THREE.MeshBasicMaterial({color: 0xffff00});
 
         const geometrySurface = new THREE.ParametricGeometry(drawingSurfaceFun, this.quality, this.quality);
         this.meshSurface = new THREE.Mesh(geometrySurface, materialSurface);
-        // this.meshSurface.rotation.x = 5.5;
-        // this.meshSurface.rotation.y = 1.5;
-        // this.meshSurface.rotation.z = 5.1;
+
+        this.meshSurface.rotation.x = 5.5;
+        this.meshSurface.rotation.y = 1.5;
+        this.meshSurface.rotation.z = 5.1;
+
         this.meshSurface.position.x = -30;
         this.meshSurface.position.y = 40;
         this.meshSurface.position.z = -500;
@@ -60,9 +74,9 @@ class Surface {
     }
 
     render() {
-        this.meshSurface.rotation.x += 0.005;
-        this.meshSurface.rotation.y += 0.005;
-        this.meshSurface.rotation.z += 0.005;
+        // this.meshSurface.rotation.x += 0.005;
+        // this.meshSurface.rotation.y += 0.005;
+        // this.meshSurface.rotation.z += 0.005;
 
         this.renderer.render(this.scene, this.camera);
     }
@@ -76,7 +90,7 @@ class Surface {
 
         var img = new Image();   // Создает новый элемент img
         img.src = imgBase64;
-        const d = 1;
+        const d = 20;
         context.drawImage(img, d, d);
 
         return imageCanvas;
